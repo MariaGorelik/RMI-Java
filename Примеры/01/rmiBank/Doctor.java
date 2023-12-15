@@ -1,6 +1,7 @@
 package rmiDoctor;
 
 import java.rmi.*;
+import java.rmi.registry.*;
 import java.util.List;
 
 /**
@@ -86,13 +87,16 @@ public class Doctor {
                 // java) or, if it is not defined, use a default URL.  Note
                 // that by default this client tries to connect to a server on
                 // the local machine
-                String url = System.getProperty("doctor", "rmi:///FirstRemote");
-		
+                String ip = "192.168.11.8";
+                Registry registry = LocateRegistry.getRegistry(ip, 8080);
+                String url = "doc";
+                //String url = System.getProperty("doctor", "rmi:///FirstRemote");
+
                 // Now look up that RemoteBank server using the Naming object,
                 // which contacts the rmiregistry server.  Given the url, this
                 // call returns a RemoteBank object whose methods may be
                 // invoked remotely
-                RemoteDoctor doctor = (RemoteDoctor) Naming.lookup(url);
+                RemoteDoctor doctor = (RemoteDoctor) registry.lookup(url);
                 
                 // Convert the user's command to lower case
                 String cmd = args[0].toLowerCase();

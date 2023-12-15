@@ -1,6 +1,8 @@
 package rmiDoctor;
 
 import java.rmi.*;
+//import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.*;
 import java.rmi.server.*;
 import java.util.*;
 
@@ -278,12 +280,16 @@ public class RemoteDoctorServer extends UnicastRemoteObject implements Doctor.Re
      **/
     public static void main(String[] args) {
         try {
+            System.setProperty("java.rmi.server.hostname", "192.168.11.151"); // added
             // Create a bank server object
             RemoteDoctorServer doctor = new RemoteDoctorServer();
+            Registry registry = LocateRegistry.createRegistry(8080);
             // Figure out what to name it
-            String name = System.getProperty("doctorname", "FirstRemote");
+            //String name = System.getProperty("doctorname", "FirstRemote");
+            String name = "doc";
+            registry.rebind(name, doctor);
             // Name it that
-            Naming.rebind(name, doctor);
+            //Naming.rebind(name, doctor);
             // Tell the world we're up and running
             System.out.println(name + " is open and ready for patients.");
         }
